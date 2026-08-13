@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="20" fill="#2d6a4f"/>
+  <circle cx="64" cy="48" r="22" fill="#95d5b2"/>
+  <rect x="42" y="72" width="44" height="36" rx="8" fill="#40916c"/>
+  <text x="64" y="118" text-anchor="middle" font-size="14" fill="#d8f3dc" font-family="sans-serif">RPG</text>
+</svg>
