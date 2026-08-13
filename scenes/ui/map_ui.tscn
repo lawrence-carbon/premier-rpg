@@ -1,0 +1,187 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/map_ui.gd" id="1_ui"]
+[ext_resource type="Script" path="res://scripts/map_view.gd" id="2_view"]
+
+[node name="MapUI" type="CanvasLayer"]
+layer = 8
+script = ExtResource("1_ui")
+
+[node name="MiniMapButton" type="Button" parent="."]
+custom_minimum_size = Vector2(168, 168)
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 184.0
+offset_bottom = 184.0
+focus_mode = 0
+flat = true
+
+[node name="MiniMapView" type="Control" parent="MiniMapButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_view")
+centered_on_player = true
+view_radius = 65.0
+show_labels = false
+show_compass = true
+
+[node name="Hint" type="Label" parent="MiniMapButton"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -28.0
+offset_top = -22.0
+offset_right = -4.0
+offset_bottom = -2.0
+theme_override_colors/font_color = Color(0.95, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 14
+text = "X"
+horizontal_alignment = 2
+
+[node name="FullMap" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dim" type="ColorRect" parent="FullMap"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.07, 0.75)
+
+[node name="Panel" type="PanelContainer" parent="FullMap"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -460.0
+offset_top = -300.0
+offset_right = 460.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margin" type="MarginContainer" parent="FullMap/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="FullMap/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="FullMap/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Carte — Vallée d'Aube"
+horizontal_alignment = 1
+
+[node name="Content" type="HBoxContainer" parent="FullMap/Panel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="MapFrame" type="PanelContainer" parent="FullMap/Panel/Margin/VBox/Content"]
+custom_minimum_size = Vector2(520, 420)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FullMapView" type="Control" parent="FullMap/Panel/Margin/VBox/Content/MapFrame"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("2_view")
+centered_on_player = false
+view_radius = 200.0
+show_labels = true
+show_compass = true
+interactive = true
+zoom = 1.0
+
+[node name="Legend" type="VBoxContainer" parent="FullMap/Panel/Margin/VBox/Content"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="LegendTitle" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Légende"
+
+[node name="L1" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+text = "▲ Bleu — Toi (regard)"
+
+[node name="L2" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+text = "● Orange — Village"
+
+[node name="L3" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+text = "● Vert — Forêt"
+
+[node name="L4" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+text = "● Gris-vert — Collines"
+
+[node name="L5" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+text = "● Gris — Montagnes"
+
+[node name="L6" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+text = "★ Jaune — Objectif de quête"
+
+[node name="Help" type="Label" parent="FullMap/Panel/Margin/VBox/Content/Legend"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 1)
+theme_override_font_sizes/font_size = 13
+text = "Molette : zoom
+Glisser : déplacer
+N = Nord  |  E = Est"
+autowrap_mode = 3
+
+[node name="Tools" type="HBoxContainer" parent="FullMap/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ZoomLabel" type="Label" parent="FullMap/Panel/Margin/VBox/Tools"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Zoom 100%"
+
+[node name="ZoomSlider" type="HSlider" parent="FullMap/Panel/Margin/VBox/Tools"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+min_value = 0.45
+max_value = 3.0
+step = 0.05
+value = 1.0
+
+[node name="CloseButton" type="Button" parent="FullMap/Panel/Margin/VBox/Tools"]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+text = "Fermer (X)"

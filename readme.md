@@ -29,10 +29,21 @@ godot .
 
 | Touche | Action |
 |--------|--------|
-| **Souris** | Tourner le regard (caméra derrière toi) |
-| **Z / Q / S / D** (ou WASD / flèches) | Marcher (par rapport à ton regard) |
+| **Souris** | Tourner le regard |
+| **Z / Q / S / D** (ou WASD / flèches) | Marcher |
 | **Espace** | Sauter |
-| **Échap** | Libérer / reprendre la souris |
+| **E** | Parler / défier |
+| **F** | Attaquer |
+| **X** | Ouvrir / fermer la carte |
+| **Échap** | Libérer la souris (ou fermer la carte) |
+
+## Histoire (chapitre 1 → 2)
+
+1. Intro → parle à **Alden** à Boisclair
+2. Va à l'est : **Forêt d'Émeraude**
+3. Vaincs les **gobelins** (F), puis parle à **Narek**
+4. Suis la piste vers le **camp de Grak** (encore plus à l'est)
+5. Affronte **Grak** et récupère la **clé**
 
 ## Fichiers importants
 
@@ -41,11 +52,12 @@ godot .
 | `scenes/world.tscn` | Le monde (sol + joueur) |
 | `scripts/decorate_world.gd` | Place village, forêts, collines… |
 | `scenes/player.tscn` | Le héros + la caméra |
-| `scripts/player.gd` | Le code qui fait bouger le héros |
-| `assets/characters/Knight.glb` | Modèle 3D du héros (KayKit) |
-| `assets/environment/` | Arbres, maisons, collines (KayKit) |
-| `assets/weapons/sword_1handed.gltf` | Épée |
-| `project.godot` | Réglages du projet |
+| `scripts/story.gd` | État de l'histoire (autoload) |
+| `scripts/story_ui.gd` | Intro + dialogues + objectif |
+| `scripts/villager.gd` | Villageois Alden |
+| `scenes/ui/map_ui.tscn` | Radar + carte complète |
+| `scripts/map_view.gd` | Dessin de la carte |
+| `scripts/world_map_data.gd` | Lieux (Boisclair, forêts…) |
 
 ## Crédits assets
 
@@ -54,11 +66,11 @@ godot .
 
 ## Prochaines idées (quand tu seras prêt)
 
-1. Donner un **nom** au héros
-2. Ajouter un **objet** à ramasser
-3. Faire parler un **villageois**
-4. Ajouter un chemin / une rivière
-5. Essayer un autre héros du pack (Rogue, Mage, Barbarian)
+1. Marquer la **Forêt d'Émeraude** sur la carte (panneau / chemin)
+2. Ajouter **Narek** dans la forêt
+3. Camps de gobelins / combat contre **Grak**
+4. Création du héros (nom, apparence)
+5. Essayer un autre modèle (Mage, Barbarian)
 
 ## Godot
 

@@ -1,7 +1,13 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/decorate_world.gd" id="2_decor"]
+[ext_resource type="PackedScene" path="res://scenes/npc_villager.tscn" id="3_villager"]
+[ext_resource type="PackedScene" path="res://scenes/ui/story_ui.tscn" id="4_ui"]
+[ext_resource type="PackedScene" path="res://scenes/ui/map_ui.tscn" id="5_map"]
+[ext_resource type="PackedScene" path="res://scenes/npc_narek.tscn" id="6_narek"]
+[ext_resource type="PackedScene" path="res://scenes/goblin.tscn" id="7_goblin"]
+[ext_resource type="PackedScene" path="res://scenes/npc_grak.tscn" id="8_grak"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.35, 0.55, 0.85, 1)
@@ -60,3 +66,25 @@ surface_material_override/0 = SubResource("StandardMaterial3D_grass")
 
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 6)
+
+[node name="Alden" parent="." instance=ExtResource("3_villager")]
+transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, -14, 0, -16)
+
+[node name="Narek" parent="." instance=ExtResource("6_narek")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, -40)
+
+[node name="Goblin1" parent="." instance=ExtResource("7_goblin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, -37)
+
+[node name="Goblin2" parent="." instance=ExtResource("7_goblin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, -43)
+
+[node name="Goblin3" parent="." instance=ExtResource("7_goblin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57, 0, -36)
+
+[node name="Grak" parent="." instance=ExtResource("8_grak")]
+transform = Transform3D(-0.7, 0, -0.714143, 0, 1, 0, 0.714143, 0, -0.7, 88, 0, -48)
+
+[node name="StoryUI" parent="." instance=ExtResource("4_ui")]
+
+[node name="MapUI" parent="." instance=ExtResource("5_map")]
