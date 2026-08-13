@@ -13,25 +13,65 @@ var _following := false
 var _story_ui: CanvasLayer
 var _player: Node3D
 
-const FOLLOW_DISTANCE := 2.8
-const FOLLOW_SPEED := 5.0
+## Assez loin pour ne pas bloquer les interactions (E) devant le héros
+const FOLLOW_DISTANCE := 5.0
+const FOLLOW_SPEED := 5.5
+const FOLLOW_SIDE := 1.4
 
 
 func _ready() -> void:
 	interact_area.body_entered.connect(_on_body_entered)
 	interact_area.body_exited.connect(_on_body_exited)
 	_play_anim("Idle")
+	add_to_group("narek")
 	call_deferred("_find_refs")
 	Story.companion_changed.connect(_on_companion_changed)
+
+
+func get_save_data() -> Dictionary:
+	return {
+		"x": global_position.x,
+		"y": global_position.y,
+		"z": global_position.z,
+		"rescued": _rescued,
+		"following": _following,
+	}
+
+
+func apply_save_data(data: Dictionary) -> void:
+	if data.is_empty():
+		return
+	global_position = Vector3(
+		float(data.get("x", global_position.x)),
+		float(data.get("y", 0.0)),
+		float(data.get("z", global_position.z))
+	)
+	_rescued = bool(data.get("rescued", false)) or Story.narek_joined
+	_following = bool(data.get("following", false)) or Story.narek_joined
+	if _following:
+		Story.narek_joined = true
+		call_deferred("_disable_companion_interact")
 
 
 func _find_refs() -> void:
 	_story_ui = get_tree().get_first_node_in_group("story_ui")
 	_player = get_tree().get_first_node_in_group("player")
+	if _following:
+		_disable_companion_interact()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not _player_near or not Story.can_control_player():
+	if not Story.can_control_player():
+		return
+	# T = parler au compagnon (même s'il suit)
+	if _following and event.is_action_pressed("talk_companion"):
+		_talk_as_companion()
+		get_viewport().set_input_as_handled()
+		return
+	# E = parler seulement avant qu'il ne te suive
+	if _following:
+		return
+	if not _player_near:
 		return
 	if event.is_action_pressed("interact"):
 		_talk()
@@ -45,32 +85,57 @@ func _physics_process(delta: float) -> void:
 		_play_anim("Idle")
 		return
 
-	var target := _player.global_position
-	var to_player := target - global_position
-	to_player.y = 0.0
-	var dist := to_player.length()
-	if dist > FOLLOW_DISTANCE:
-		var step := minf(FOLLOW_SPEED * delta, dist - FOLLOW_DISTANCE + 0.05)
-		global_position += to_player.normalized() * step
-		global_position.y = 0.0
-		look_at(Vector3(target.x, global_position.y, target.z), Vector3.UP)
+	# Point d'attente : derrière et un peu sur le côté
+	var back := -_player.global_transform.basis.z
+	back.y = 0.0
+	if back.length_squared() < 0.01:
+		back = Vector3(0, 0, 1)
+	else:
+		back = back.normalized()
+	var side := _player.global_transform.basis.x
+	side.y = 0.0
+	side = side.normalized()
+	var hold := _player.global_position - back * FOLLOW_DISTANCE + side * FOLLOW_SIDE
+	hold.y = _player.global_position.y
+
+	var to_hold := hold - global_position
+	to_hold.y = 0.0
+	var dist := to_hold.length()
+	if dist > 0.35:
+		var step := minf(FOLLOW_SPEED * delta, dist)
+		global_position += to_hold.normalized() * step
+		global_position.y = hold.y
+		look_at(Vector3(_player.global_position.x, global_position.y, _player.global_position.z), Vector3.UP)
 		_play_anim("Running_A")
 	else:
 		_play_anim("Idle")
 
 
 func _on_body_entered(body: Node3D) -> void:
-	if body.is_in_group("player"):
-		_player_near = true
-		if _story_ui and _story_ui.has_method("show_interact_prompt"):
-			_story_ui.show_interact_prompt(true, "Parler à %s [E]" % npc_name)
+	if not body.is_in_group("player"):
+		return
+	_player_near = true
+	if _following:
+		return
+	if _story_ui and _story_ui.has_method("show_interact_prompt"):
+		_story_ui.show_interact_prompt(true, "Parler à %s [E]" % npc_name)
 
 
 func _on_body_exited(body: Node3D) -> void:
 	if body.is_in_group("player"):
 		_player_near = false
+		if _following:
+			return
 		if _story_ui and _story_ui.has_method("show_interact_prompt"):
 			_story_ui.show_interact_prompt(false)
+
+
+func _disable_companion_interact() -> void:
+	_player_near = false
+	if interact_area:
+		interact_area.monitoring = false
+	if _story_ui and _story_ui.has_method("show_interact_prompt"):
+		_story_ui.show_interact_prompt(false)
 
 
 func _nearby_goblins_alive() -> bool:
@@ -115,16 +180,50 @@ func _talk() -> void:
 	)
 
 
+func _talk_as_companion() -> void:
+	if _story_ui == null or not _story_ui.has_method("start_dialogue"):
+		return
+	if Story.voiled_seen:
+		_story_ui.start_dialogue(npc_name, PackedStringArray([
+			"Le Voilé… il savait pour le cristal.",
+			"Quand tu voudras quitter la vallée, je serai à tes côtés.",
+		]))
+	elif Story.mira_talked:
+		_story_ui.start_dialogue(npc_name, PackedStringArray([
+			"Le Col de l'Aube est à l'ouest. Mira a raison : quelqu'un nous guette.",
+		]))
+	elif Story.crystal_found:
+		_story_ui.start_dialogue(npc_name, PackedStringArray([
+			"Ce fragment… Alden et Mira doivent en entendre parler.",
+			"Retournons à Boisclair.",
+		]))
+	elif Story.has_key or Story.stage == "grak_done":
+		_story_ui.start_dialogue(npc_name, PackedStringArray([
+			"La clé de Grak ouvre quelque chose près de la colline, au nord.",
+			"Allons-y.",
+		]))
+	else:
+		_story_ui.start_dialogue(npc_name, PackedStringArray([
+			"Le camp de Grak est plus à l'est.",
+			"Je reste juste derrière. Appuie sur N si tu veux me parler.",
+		]))
+
+
 func _on_rescue_finished() -> void:
 	_rescued = true
 	Story.set_stage("narek")
 	Story.join_narek()
 	Story.set_quest("Suivre Narek : trouver le camp de Grak (plus à l'est)")
 	_following = true
+	_disable_companion_interact()
 
 
 func _on_companion_changed(active: bool) -> void:
 	_following = active and _rescued
+	if _following:
+		_disable_companion_interact()
+	elif interact_area:
+		interact_area.monitoring = true
 
 
 func _play_anim(anim_name: String) -> void:

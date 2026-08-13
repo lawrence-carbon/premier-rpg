@@ -152,6 +152,14 @@ func _draw_poi(poi: Dictionary) -> void:
 			show_star = Story.stage == "narek"
 		elif id == "foret_emeraude":
 			show_star = Story.stage == "forest" or Story.stage == "none"
+		elif id == "crypt":
+			show_star = Story.stage == "grak_done" or Story.stage == "crypt"
+		elif id == "boisclair":
+			show_star = Story.stage == "crystal_done"
+		elif id == "mira":
+			show_star = Story.stage == "mira"
+		elif id == "col_aube":
+			show_star = Story.stage == "col"
 		else:
 			show_star = true
 	if show_star:

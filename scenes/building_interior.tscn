@@ -1,0 +1,128 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/building_interior.gd" id="1_script"]
+
+[sub_resource type="StandardMaterial3D" id="MatFloor"]
+albedo_color = Color(0.42, 0.32, 0.22, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="MatWall"]
+albedo_color = Color(0.55, 0.48, 0.38, 1)
+roughness = 0.85
+
+[sub_resource type="StandardMaterial3D" id="MatWood"]
+albedo_color = Color(0.35, 0.22, 0.12, 1)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="MeshFloor"]
+size = Vector3(14, 0.35, 16)
+
+[sub_resource type="BoxMesh" id="MeshCeiling"]
+size = Vector3(14, 0.35, 16)
+
+[sub_resource type="BoxMesh" id="MeshWall"]
+size = Vector3(14, 4.5, 0.45)
+
+[sub_resource type="BoxMesh" id="MeshWallSide"]
+size = Vector3(0.45, 4.5, 16)
+
+[sub_resource type="BoxMesh" id="MeshTable"]
+size = Vector3(2.2, 0.7, 1.2)
+
+[sub_resource type="BoxShape3D" id="BoxFloor"]
+size = Vector3(14, 0.35, 16)
+
+[sub_resource type="BoxShape3D" id="BoxWall"]
+size = Vector3(14, 4.5, 0.45)
+
+[sub_resource type="BoxShape3D" id="BoxWallSide"]
+size = Vector3(0.45, 4.5, 16)
+
+[node name="BuildingInterior" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+mesh = SubResource("MeshFloor")
+surface_material_override/0 = SubResource("MatFloor")
+
+[node name="Collision" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.15, 0)
+shape = SubResource("BoxFloor")
+
+[node name="Ceiling" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.4, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="Ceiling"]
+mesh = SubResource("MeshCeiling")
+surface_material_override/0 = SubResource("MatWall")
+
+[node name="WallN" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, -8)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallN"]
+mesh = SubResource("MeshWall")
+surface_material_override/0 = SubResource("MatWall")
+
+[node name="Collision" type="CollisionShape3D" parent="WallN"]
+shape = SubResource("BoxWall")
+
+[node name="WallS" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 8)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallS"]
+mesh = SubResource("MeshWall")
+surface_material_override/0 = SubResource("MatWall")
+
+[node name="Collision" type="CollisionShape3D" parent="WallS"]
+shape = SubResource("BoxWall")
+
+[node name="WallE" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2.1, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallE"]
+mesh = SubResource("MeshWallSide")
+surface_material_override/0 = SubResource("MatWall")
+
+[node name="Collision" type="CollisionShape3D" parent="WallE"]
+shape = SubResource("BoxWallSide")
+
+[node name="WallW" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 2.1, 0)
+
+[node name="Mesh" type="MeshInstance3D" parent="WallW"]
+mesh = SubResource("MeshWallSide")
+surface_material_override/0 = SubResource("MatWall")
+
+[node name="Collision" type="CollisionShape3D" parent="WallW"]
+shape = SubResource("BoxWallSide")
+
+[node name="Table" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, -2)
+mesh = SubResource("MeshTable")
+surface_material_override/0 = SubResource("MatWood")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0)
+light_color = Color(1, 0.9, 0.7, 1)
+light_energy = 2.8
+omni_range = 16.0
+
+[node name="TitleLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.6, -7.5)
+pixel_size = 0.014
+text = "Intérieur"
+font_size = 48
+outline_size = 8
+modulate = Color(1, 0.92, 0.75, 1)
+
+[node name="ExitLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.8, 7.2)
+pixel_size = 0.012
+text = "Sortie"
+font_size = 42
+outline_size = 8
+modulate = Color(0.7, 0.9, 1, 1)
+billboard = 1

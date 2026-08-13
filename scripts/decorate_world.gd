@@ -7,6 +7,7 @@ const PROP_SCALE := 6.0
 const MAP_HALF := 180.0 # le sol va de -180 à +180
 ## Distance mini entre deux arbres (pour pouvoir se faufiler)
 const TREE_MIN_SPACING := 1.0
+const DOOR_SCENE := preload("res://scenes/building_door.tscn")
 
 @onready var decor: Node3D = $Decor
 
@@ -80,6 +81,15 @@ func _build_village() -> void:
 	_spawn("res://assets/environment/buildings/building_church_yellow.gltf", base + Vector3(-4, 0, -18), 5)
 	_spawn("res://assets/environment/buildings/building_lumbermill_yellow.gltf", base + Vector3(18, 0, 10), -40)
 	_spawn("res://assets/environment/buildings/building_windmill_yellow.gltf", base + Vector3(-20, 0, 12), 25)
+	# Portes : E pour entrer (intérieur commun sous le village)
+	_add_door("Maison", base + Vector3(1.5, 0, 5.5), 0)
+	_add_door("Maison", base + Vector3(10, 0, 9.5), 0)
+	_add_door("Maison", base + Vector3(-6, 0, 13), 0)
+	_add_door("Taverne", base + Vector3(4, 0, -5.5), 0)
+	_add_door("Forge", base + Vector3(-10, 0, -1), 0)
+	_add_door("Marché", base + Vector3(14, 0, 1.5), 0)
+	_add_door("Église", base + Vector3(-4, 0, -14.8), 0)
+	_add_door("Scierie", base + Vector3(16, 0, 14.5), 0)
 	# Arbres autour du village (espacés, collision tronc)
 	for i in 6:
 		var a := float(i) * TAU / 6.0
@@ -90,6 +100,14 @@ func _build_village() -> void:
 			0.9 + (i % 3) * 0.15,
 			"trunk"
 		)
+
+
+func _add_door(building_name: String, pos: Vector3, yaw_deg: float) -> void:
+	var door: Node3D = DOOR_SCENE.instantiate()
+	door.set("building_name", building_name)
+	door.position = pos
+	door.rotation_degrees.y = yaw_deg
+	decor.add_child(door)
 
 
 func _build_forest(center: Vector3, radius: float, count: int) -> void:
@@ -135,10 +153,13 @@ func _build_hills() -> void:
 	_spawn("res://assets/environment/nature/hill_single_A.gltf", Vector3(15, 0, 35), 0, 1.5)
 	_spawn("res://assets/environment/nature/hill_single_B.gltf", Vector3(-40, 0, 20), 60, 1.6)
 	_spawn("res://assets/environment/nature/hill_single_C.gltf", Vector3(25, 0, -50), -30, 1.4)
+	# Colline de la Crypte oubliée (entrée collée au flanc sud)
+	_spawn("res://assets/environment/nature/hill_single_A.gltf", Vector3(132.3, 0, -102), 0, 1.35)
 	# Quelques arbres espacés sur les collines
 	_spawn("res://assets/environment/nature/tree_single_B.gltf", Vector3(38, 0, -68), 10, 1.0, "trunk")
 	_spawn("res://assets/environment/nature/tree_single_A.gltf", Vector3(48, 0, -74), -20, 1.1, "trunk")
 	_spawn("res://assets/environment/nature/tree_single_B.gltf", Vector3(-46, 0, -78), 40, 1.0, "trunk")
+	_spawn("res://assets/environment/nature/tree_single_A.gltf", Vector3(138, 0, -105), -15, 1.0, "trunk")
 
 
 func _build_mountains() -> void:

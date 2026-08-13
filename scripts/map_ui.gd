@@ -51,7 +51,7 @@ func _on_mini_pressed() -> void:
 
 
 func open_full_map() -> void:
-	if full_root.visible:
+	if full_root.visible or Story.menu_open:
 		return
 	# Pas pendant intro / dialogue (sauf si déjà la carte)
 	if Story.ui_locked and not Story.map_open:

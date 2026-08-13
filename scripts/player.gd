@@ -31,13 +31,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not Story.can_control_player():
 		return
 
-	if event.is_action_pressed("ui_cancel"):
-		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-		else:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-		return
-
 	if event.is_action_pressed("attack"):
 		_try_attack()
 		get_viewport().set_input_as_handled()

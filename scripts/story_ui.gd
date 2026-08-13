@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var intro_title: Label = $Intro/Panel/Margin/VBox/Title
 @onready var intro_body: Label = $Intro/Panel/Margin/VBox/Body
 @onready var intro_button: Button = $Intro/Panel/Margin/VBox/StartButton
+@onready var continue_button: Button = $Intro/Panel/Margin/VBox/ContinueButton
 
 @onready var dialogue_root: Control = $Dialogue
 @onready var dialogue_name: Label = $Dialogue/Panel/Margin/VBox/Speaker
@@ -29,6 +30,7 @@ var _on_dialogue_finished: Callable = Callable()
 
 func _ready() -> void:
 	intro_button.pressed.connect(_on_intro_start_pressed)
+	continue_button.pressed.connect(_on_continue_pressed)
 	Story.quest_updated.connect(_on_quest_updated)
 	dialogue_root.visible = false
 	quest_root.visible = false
@@ -58,14 +60,40 @@ func _show_intro() -> void:
 		+ "gobelins trop organisés, routes dangereuses.\n\n"
 		+ "Ton aventure commence ici."
 	)
+	var has_save := SaveGame.has_save()
+	continue_button.visible = has_save
+	intro_button.text = "Nouvelle partie" if has_save else "Commencer l'aventure"
 
 
 func _on_intro_start_pressed() -> void:
-	intro_root.visible = false
+	# Nouvelle aventure (ignore la sauvegarde pour cette session)
+	Story.reset()
 	Story.intro_done = true
+	intro_root.visible = false
 	Story.unlock_from_ui()
 	hp_root.visible = true
 	update_hp(8, 8)
+
+
+func _on_continue_pressed() -> void:
+	if SaveGame.load_game():
+		hide_intro_for_continue()
+	else:
+		intro_body.text = "Impossible de charger la sauvegarde.\nChoisis Nouvelle partie."
+
+
+func hide_intro_for_continue() -> void:
+	intro_root.visible = false
+	Story.intro_done = true
+	hp_root.visible = true
+	if Story.quest_active:
+		_on_quest_updated(Story.quest_text)
+	var player := get_tree().get_first_node_in_group("player")
+	if player and player.get("hp") != null:
+		update_hp(int(player.hp), 8)
+	else:
+		update_hp(8, 8)
+	Story.unlock_from_ui()
 
 
 func update_hp(current: int, maximum: int) -> void:
@@ -116,7 +144,7 @@ func _close_dialogue() -> void:
 
 
 func show_interact_prompt(visible_now: bool, text: String = "Parler [E]") -> void:
-	if Story.ui_locked:
+	if Story.ui_locked or Story.menu_open:
 		prompt_root.visible = false
 		return
 	prompt_root.visible = visible_now

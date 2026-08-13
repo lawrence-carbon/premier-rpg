@@ -20,6 +20,7 @@ var _player: Node3D
 func _ready() -> void:
 	hp = max_hp
 	add_to_group("enemies")
+	add_to_group("grak")
 	interact_area.body_entered.connect(_on_body_entered)
 	interact_area.body_exited.connect(_on_body_exited)
 	_play_anim("Idle")
@@ -98,21 +99,22 @@ func _die() -> void:
 	_dead = true
 	_in_fight = false
 	_play_anim("Death_A")
+	# Donne la clé tout de suite (même si le dialogue est coupé)
+	Story.give_key()
 	if _story_ui and _story_ui.has_method("show_interact_prompt"):
 		_story_ui.show_interact_prompt(false)
-	await get_tree().create_timer(1.0).timeout
-	if _story_ui and _story_ui.has_method("start_dialogue"):
+	await get_tree().create_timer(0.8).timeout
+	var ui := get_tree().get_first_node_in_group("story_ui")
+	if ui and ui.has_method("start_dialogue"):
 		var speaker := "Narek" if Story.narek_joined else "Héros"
-		_story_ui.start_dialogue(
+		ui.start_dialogue(
 			speaker,
 			PackedStringArray([
 				"Grak est vaincu…",
 				"Sur lui : une étrange clé ancienne.",
-				"Elle semble ouvrir quelque chose d'oublié sous la forêt…",
-			]),
-			func () -> void:
-				Story.set_stage("grak_done")
-				Story.set_quest("La clé est à toi — la Crypte oubliée arrive bientôt")
+				"Des ruines au pied de la colline, un peu plus au nord, semblent faites pour cette clé.",
+				"Va vers le sud du camp — porte de pierre — et appuie sur E.",
+			])
 		)
 	queue_free()
 

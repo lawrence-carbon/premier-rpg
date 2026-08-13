@@ -14,6 +14,23 @@ const POIS: Array[Dictionary] = [
 		"pos": Vector2(-18, -22),
 		"type": "village",
 		"radius": 18.0,
+		"quest": true,
+	},
+	{
+		"id": "mira",
+		"name": "Mira (église)",
+		"pos": Vector2(-17, -31),
+		"type": "village",
+		"radius": 6.0,
+		"quest": true,
+	},
+	{
+		"id": "col_aube",
+		"name": "Col de l'Aube",
+		"pos": Vector2(-95, -55),
+		"type": "mountain",
+		"radius": 12.0,
+		"quest": true,
 	},
 	{
 		"id": "foret_emeraude",
@@ -29,6 +46,14 @@ const POIS: Array[Dictionary] = [
 		"pos": Vector2(88, -48),
 		"type": "hills",
 		"radius": 14.0,
+		"quest": true,
+	},
+	{
+		"id": "crypt",
+		"name": "Crypte oubliée",
+		"pos": Vector2(132, -99),
+		"type": "mountain",
+		"radius": 10.0,
 		"quest": true,
 	},
 	{

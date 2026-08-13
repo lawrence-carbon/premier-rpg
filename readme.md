@@ -7,6 +7,7 @@ Petit jeu **3D** en monde ouvert, fait avec **Godot 4**, pour apprendre les base
 - un **héros 3D** (chevalier KayKit, avec épée et animations)
 - une **grande carte** (400×400)
 - un **village** en bois (maisons, taverne, puits, forge, église…)
+- on peut **entrer** dans les bâtiments (**E** devant la porte)
 - des **forêts**, **collines**, **rochers** et **montagnes**
 - un léger **brouillard** au loin
 
@@ -32,18 +33,24 @@ godot .
 | **Souris** | Tourner le regard |
 | **Z / Q / S / D** (ou WASD / flèches) | Marcher |
 | **Espace** | Sauter |
-| **E** | Parler / défier |
+| **E** | Parler / défier / ouvrir / entrer-sortir |
+| **N** | Parler à **Narek** (quand il te suit) |
 | **F** | Attaquer |
 | **X** | Ouvrir / fermer la carte |
-| **Échap** | Libérer la souris (ou fermer la carte) |
+| **Échap** | Menu (sauvegarder / charger / nouvelle partie) |
 
-## Histoire (chapitre 1 → 2)
+## Histoire (chapitres 1 → 4)
 
 1. Intro → parle à **Alden** à Boisclair
 2. Va à l'est : **Forêt d'Émeraude**
 3. Vaincs les **gobelins** (F), puis parle à **Narek**
 4. Suis la piste vers le **camp de Grak** (encore plus à l'est)
 5. Affronte **Grak** et récupère la **clé**
+6. Ouvre la **Crypte oubliée** (pied de la colline, au nord du camp)
+7. Touche le **cristal** → vision des Sept Cristaux
+8. Sors (**E** au panneau Sortie) → retourne voir **Alden**
+9. Parle à **Mira** devant l'église
+10. Va à l'**ouest** : **Col de l'Aube** → rencontre le **Voilé**
 
 ## Fichiers importants
 
@@ -66,11 +73,10 @@ godot .
 
 ## Prochaines idées (quand tu seras prêt)
 
-1. Marquer la **Forêt d'Émeraude** sur la carte (panneau / chemin)
-2. Ajouter **Narek** dans la forêt
-3. Camps de gobelins / combat contre **Grak**
-4. Création du héros (nom, apparence)
-5. Essayer un autre modèle (Mage, Barbarian)
+1. Quitter la Vallée d'Aube vers un autre royaume
+2. Deuxième Cristal Ancien
+3. Création du héros (nom, apparence)
+4. Essayer un autre modèle (Mage, Barbarian)
 
 ## Godot
 
