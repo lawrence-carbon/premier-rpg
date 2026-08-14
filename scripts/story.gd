@@ -27,6 +27,8 @@ var has_key := false
 var crystal_found := false
 var mira_talked := false
 var voiled_seen := false
+## true = le joueur conduit l'automobile
+var in_vehicle := false
 
 
 func lock_for_ui() -> void:
@@ -142,4 +144,5 @@ func reset() -> void:
 	crystal_found = false
 	mira_talked = false
 	voiled_seen = false
+	in_vehicle = false
 	companion_changed.emit(false)

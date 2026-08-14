@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_player"]
-[ext_resource type="PackedScene" path="res://assets/characters/Knight.glb" id="2_knight"]
+[ext_resource type="PackedScene" path="res://assets/characters/Rogue_Hooded.glb" id="2_rogue"]
 [ext_resource type="PackedScene" path="res://assets/weapons/sword_1handed.gltf" id="3_sword"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
@@ -19,9 +19,9 @@ shape = SubResource("CapsuleShape3D_1")
 [node name="Model" type="Node3D" parent="."]
 transform = Transform3D(-0.5, 0, 0, 0, 0.5, 0, 0, 0, -0.5, 0, 0, 0)
 
-[node name="Knight" parent="Model" instance=ExtResource("2_knight")]
+[node name="RogueHooded" parent="Model" instance=ExtResource("2_rogue")]
 
-[node name="Sword" parent="Model/Knight/Rig/Skeleton3D/handslot_r" instance=ExtResource("3_sword")]
+[node name="Sword" parent="Model/RogueHooded/Rig/Skeleton3D/handslot_r" instance=ExtResource("3_sword")]
 
 [node name="CameraPivot" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)

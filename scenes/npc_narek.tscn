@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/narek.gd" id="1_narek"]
-[ext_resource type="PackedScene" path="res://assets/characters/Rogue_Hooded.glb" id="2_rogue"]
+[ext_resource type="PackedScene" path="res://assets/characters/Rogue.glb" id="2_rogue"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_body"]
 radius = 0.35
@@ -24,7 +24,7 @@ shape = SubResource("CapsuleShape3D_body")
 [node name="Model" type="Node3D" parent="."]
 transform = Transform3D(-0.5, 0, 0, 0, 0.5, 0, 0, 0, -0.5, 0, 0, 0)
 
-[node name="RogueHooded" parent="Model" instance=ExtResource("2_rogue")]
+[node name="Rogue" parent="Model" instance=ExtResource("2_rogue")]
 
 [node name="InteractArea" type="Area3D" parent="."]
 collision_layer = 0

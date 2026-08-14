@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="PackedScene" path="res://scenes/player.tscn" id="1_player"]
 [ext_resource type="Script" path="res://scripts/decorate_world.gd" id="2_decor"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" path="res://scenes/npc_mira.tscn" id="12_mira"]
 [ext_resource type="PackedScene" path="res://scenes/voiled_apparition.tscn" id="13_voiled"]
 [ext_resource type="PackedScene" path="res://scenes/building_interior.tscn" id="14_interior"]
+[ext_resource type="PackedScene" path="res://scenes/vintage_car.tscn" id="15_car"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.35, 0.55, 0.85, 1)
@@ -73,11 +74,14 @@ surface_material_override/0 = SubResource("StandardMaterial3D_grass")
 [node name="Player" parent="." instance=ExtResource("1_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 6)
 
+[node name="VintageCar" parent="." instance=ExtResource("15_car")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -8)
+
 [node name="Alden" parent="." instance=ExtResource("3_villager")]
 transform = Transform3D(-0.843661, 0, -0.536875, 0, 1, 0, 0.536875, 0, -0.843661, -14, 0, -16)
 
 [node name="Mira" parent="." instance=ExtResource("12_mira")]
-transform = Transform3D(-0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, -0.866025, -17, 0, -31)
+transform = Transform3D(-0.984808, 0, -0.173648, 0, 1, 0, 0.173648, 0, -0.984808, -19.2, 0, -36)
 
 [node name="Narek" parent="." instance=ExtResource("6_narek")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 55, 0, -40)

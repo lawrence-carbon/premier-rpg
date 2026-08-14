@@ -29,6 +29,7 @@ func save_game() -> bool:
 		"crypt_entrance": {},
 		"crypt_crystal": {},
 		"voiled": {},
+		"vintage_car": {},
 	}
 
 	if player:
@@ -61,6 +62,10 @@ func save_game() -> bool:
 	var voiled := get_tree().get_first_node_in_group("voiled")
 	if voiled and voiled.has_method("get_save_data"):
 		data["voiled"] = voiled.get_save_data()
+
+	var car := get_tree().get_first_node_in_group("vintage_car")
+	if car and car.has_method("get_save_data"):
+		data["vintage_car"] = car.get_save_data()
 
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	if file == null:
@@ -136,6 +141,10 @@ func _apply_save(data: Dictionary) -> void:
 	var voiled := get_tree().get_first_node_in_group("voiled")
 	if voiled and voiled.has_method("apply_save_data"):
 		voiled.apply_save_data(data.get("voiled", {}))
+
+	var car := get_tree().get_first_node_in_group("vintage_car")
+	if car and car.has_method("apply_save_data"):
+		car.apply_save_data(data.get("vintage_car", {}))
 
 	Story.intro_done = true
 	Story.menu_open = false

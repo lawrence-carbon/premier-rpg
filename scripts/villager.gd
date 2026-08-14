@@ -5,7 +5,7 @@ extends Node3D
 @export var npc_name := "Alden"
 @export var interact_radius := 2.8
 
-@onready var anim: AnimationPlayer = $Model/Rogue/AnimationPlayer
+@onready var anim: AnimationPlayer = $Model/Knight/AnimationPlayer
 @onready var interact_area: Area3D = $InteractArea
 
 var _player_near := false
@@ -16,9 +16,22 @@ var _story_ui: CanvasLayer
 func _ready() -> void:
 	interact_area.body_entered.connect(_on_body_entered)
 	interact_area.body_exited.connect(_on_body_exited)
+	_hide_extra_gear()
 	_play_idle()
 	add_to_group("alden")
 	call_deferred("_find_story_ui")
+
+
+func _hide_extra_gear() -> void:
+	for slot_name in ["handslot_r", "handslot_l"]:
+		var slot := get_node_or_null("Model/Knight/Rig/Skeleton3D/%s" % slot_name)
+		if slot == null:
+			continue
+		for child in slot.get_children():
+			child.visible = false
+	var helmet := get_node_or_null("Model/Knight/Rig/Skeleton3D/head/Knight_Helmet")
+	if helmet:
+		helmet.visible = false
 
 
 func get_save_data() -> Dictionary:

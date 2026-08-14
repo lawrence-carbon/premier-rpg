@@ -12,10 +12,13 @@ const ATTACK_COOLDOWN := 0.45
 const MAX_HP := 8
 
 @onready var camera_pivot: Node3D = $CameraPivot
-@onready var anim: AnimationPlayer = $Model/Knight/AnimationPlayer
+@onready var anim: AnimationPlayer = $Model/RogueHooded/AnimationPlayer
+@onready var model_root: Node3D = $Model
 
 var hp := MAX_HP
 var _attack_cd := 0.0
+var _driving := false
+var _model_rest: Transform3D
 
 
 func _ready() -> void:
@@ -23,12 +26,41 @@ func _ready() -> void:
 	hp = MAX_HP
 	if Story.can_control_player():
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	_hide_default_weapons()
 	_play_anim("Idle")
+	_model_rest = model_root.transform
 	call_deferred("_emit_hp")
 
 
+func _hide_default_weapons() -> void:
+	var slot := get_node_or_null("Model/RogueHooded/Rig/Skeleton3D/handslot_r")
+	if slot == null:
+		return
+	for child in slot.get_children():
+		if child.name != "Sword":
+			child.visible = false
+	var off := get_node_or_null("Model/RogueHooded/Rig/Skeleton3D/handslot_l")
+	if off:
+		for child in off.get_children():
+			child.visible = false
+
+
+func set_driving(active: bool) -> void:
+	_driving = active
+	$CollisionShape3D.disabled = active
+	model_root.visible = not active
+	model_root.transform = _model_rest
+	var sword := get_node_or_null("Model/RogueHooded/Rig/Skeleton3D/handslot_r")
+	if sword:
+		sword.visible = true
+	if not active:
+		$CameraPivot/Camera3D.current = true
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		_play_anim("Idle")
+
+
 func _unhandled_input(event: InputEvent) -> void:
-	if not Story.can_control_player():
+	if _driving or not Story.can_control_player():
 		return
 
 	if event.is_action_pressed("attack"):
@@ -44,6 +76,9 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(_delta: float) -> void:
 	_attack_cd = maxf(_attack_cd - _delta, 0.0)
+
+	if _driving:
+		return
 
 	if not Story.can_control_player():
 		velocity.x = 0.0
@@ -103,6 +138,10 @@ func _try_attack() -> void:
 
 
 func _respawn() -> void:
+	if Story.in_vehicle:
+		var car := get_tree().get_first_node_in_group("vintage_car")
+		if car and car.has_method("exit_vehicle"):
+			car.exit_vehicle()
 	# Retour près du village, PV restaurés
 	global_position = Vector3(0, 0.2, 6)
 	hp = MAX_HP

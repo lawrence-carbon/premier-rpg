@@ -19,7 +19,7 @@ const POIS: Array[Dictionary] = [
 	{
 		"id": "mira",
 		"name": "Mira (église)",
-		"pos": Vector2(-17, -31),
+		"pos": Vector2(-19.2, -36),
 		"type": "village",
 		"radius": 6.0,
 		"quest": true,

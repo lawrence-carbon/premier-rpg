@@ -4,7 +4,7 @@ extends Node3D
 
 @export var npc_name := "Narek"
 
-@onready var anim: AnimationPlayer = $Model/RogueHooded/AnimationPlayer
+@onready var anim: AnimationPlayer = $Model/Rogue/AnimationPlayer
 @onready var interact_area: Area3D = $InteractArea
 
 var _player_near := false
@@ -85,27 +85,37 @@ func _physics_process(delta: float) -> void:
 		_play_anim("Idle")
 		return
 
+	var follow := _player as Node3D
+	var dist_hold := FOLLOW_DISTANCE
+	var speed := FOLLOW_SPEED
+	if Story.in_vehicle:
+		var car := get_tree().get_first_node_in_group("vintage_car") as Node3D
+		if car:
+			follow = car
+			dist_hold = 8.0
+			speed = 12.0
+
 	# Point d'attente : derrière et un peu sur le côté
-	var back := -_player.global_transform.basis.z
+	var back := -follow.global_transform.basis.z
 	back.y = 0.0
 	if back.length_squared() < 0.01:
 		back = Vector3(0, 0, 1)
 	else:
 		back = back.normalized()
-	var side := _player.global_transform.basis.x
+	var side := follow.global_transform.basis.x
 	side.y = 0.0
 	side = side.normalized()
-	var hold := _player.global_position - back * FOLLOW_DISTANCE + side * FOLLOW_SIDE
-	hold.y = _player.global_position.y
+	var hold := follow.global_position - back * dist_hold + side * FOLLOW_SIDE
+	hold.y = follow.global_position.y
 
 	var to_hold := hold - global_position
 	to_hold.y = 0.0
 	var dist := to_hold.length()
 	if dist > 0.35:
-		var step := minf(FOLLOW_SPEED * delta, dist)
+		var step := minf(speed * delta, dist)
 		global_position += to_hold.normalized() * step
 		global_position.y = hold.y
-		look_at(Vector3(_player.global_position.x, global_position.y, _player.global_position.z), Vector3.UP)
+		look_at(Vector3(follow.global_position.x, global_position.y, follow.global_position.z), Vector3.UP)
 		_play_anim("Running_A")
 	else:
 		_play_anim("Idle")

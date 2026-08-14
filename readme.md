@@ -4,9 +4,10 @@ Petit jeu **3D** en monde ouvert, fait avec **Godot 4**, pour apprendre les base
 
 ## Ce que tu as déjà
 
-- un **héros 3D** (chevalier KayKit, avec épée et animations)
+- un **héros 3D** (rôdeur à capuche KayKit, avec épée et animations)
 - une **grande carte** (400×400)
 - un **village** en bois (maisons, taverne, puits, forge, église…)
+- une **vieille automobile** (Ford T) près de Boisclair — **E** pour la conduire
 - on peut **entrer** dans les bâtiments (**E** devant la porte)
 - des **forêts**, **collines**, **rochers** et **montagnes**
 - un léger **brouillard** au loin
@@ -33,9 +34,13 @@ godot .
 | **Souris** | Tourner le regard |
 | **Z / Q / S / D** (ou WASD / flèches) | Marcher |
 | **Espace** | Sauter |
-| **E** | Parler / défier / ouvrir / entrer-sortir |
+| **E** | Parler / défier / ouvrir / entrer-sortir / **conduire** |
 | **N** | Parler à **Narek** (quand il te suit) |
 | **F** | Attaquer |
+| **X** | Ouvrir / fermer la carte |
+| **Échap** | Menu (sauvegarder / charger / nouvelle partie) |
+
+Dans l'automobile : **Z** avancer, **S** reculer, **Q / D** tourner, **E** descendre. Les roues tournent et les avant braquent.
 | **X** | Ouvrir / fermer la carte |
 | **Échap** | Menu (sauvegarder / charger / nouvelle partie) |
 
@@ -70,6 +75,7 @@ godot .
 
 - Personnage et armes : [KayKit Adventurers](https://kaylousberg.itch.io/kaykit-adventurers) (CC0)
 - Décor médiéval : [KayKit Medieval Hexagon Pack](https://kaylousberg.itch.io/kaykit-medieval-hexagon) (CC0)
+- Automobile Ford T : [Bruno Oliveira](https://poly.pizza/m/aJVM4rmsGIb) (CC BY 3.0)
 
 ## Prochaines idées (quand tu seras prêt)
 
